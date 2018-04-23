@@ -1,4 +1,16 @@
 .image {
-	max-width: 500px;
-	max-height: 500px;
+	float: left;
+	max-width: 1000px;
+	max-height: 1000px;
+}
+h1{
+	color: white;
+
+}
+.btn-group{
+	background-color: grey;
+	width: 100%;
+}
+button{
+	width: 14.5%;
 }
