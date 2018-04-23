@@ -14,18 +14,99 @@
 
 	<!-- Custom stylesheet -->
     <link rel="stylesheet" href='{% static "css/home.css" %}'></head>
+		<script language="javascript" type="text/javascript">
+   /*	function dynamicdropdown(listindex)
+    {
+        switch (listindex)
+        {
+        case "bs1reg" :
+            document.formname.status.options[0]=new Option("Select status","");
+            document.formname.status.options[1]=new Option("OPEN","open");
+            document.formname.status.options[2]=new Option("DELIVERED","delivered");
+            break;
+        case "bs2reg" :
+				document.formname.status.options[0]=new Option("Select status","");
+				document.formname.status.options[1]=new Option("OPEN","open");
+				document.formname.status.options[2]=new Option("DELIVERED","delivered");
+            break;
+        }
+        return true;
+    }*/
+
+
+
+    </script>
 </head>
-<body>
+<body style="background-color:#196767">
 	<div class="container">
+		<br>
+		<br>
+		<br>
+		<br>
+		<img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image"><h1>Gujarat Technological University<br>Ahmedabad<br></h1>
+		<marquee direction="left" style="background-color:white">Cancel Status of student at the time of exam form generation and hall-ticket generation, if system found any issues, then system will automatically be cancelled.</marquee>
+		<div class="btn-group" >
+  		<button>Home</button>
+  		<button>Re-check</button>
+  		<button>Elective</button>
+			<button>Exam Form</button>
+			<button>Exam data Reports</button>
+			<button>Others</button>
+			<button>Staff</button>
+		</div>
+		<div style="background-color:white">
+			<h5 style="background-color:#2db300">Result Analysis:<select>
+  		<option value="W2017">W2017</option>
+  		<option value="W2016">W2016</option>
+  		<option value="W2015">W2015</option>
+  		<option value="W2014">W2014</option>
+		</select>
+	</h5>
+	<br>
+		Branch:
+			<select id="branch" name="branch" >
+			<option value="">Select branch</option>
+		 <option class="bs1reg">BE-Sem 1-Regular(DEC-2017)</option>
+     <option class="bs3reg">BE-Sem 3-Regular(DEC-2017)</option>
+
+	 </select>
+	 <br>
+	 <br>
+	Criteria:
+	<select id="branch" name="branch" >
+	<option value="">Select criteria</option>
+ 	<option class="overall">Overall Analysis</option>
+ 	<option class="branch">Branchwise Analysis</option>
+	</select>
+	<br>
+	<br>
+
+	<center>
+		<table border="1" width="75%">
+			<tr>
+				<td>Static</td>
+				<td>data</td>
+			</tr>
+			<tr>
+				<td>is filled</td>
+				<td>here</td>
+			</tr>
+		</table>
+		<br>
+	<a href="#">Download PDF|</a>
+	<a href="#">Cancel Download</a>
+	<center>
+		</div>
 		<!-- You should comment out following code, when you start working on real design! -->
-		<h1>This is homepage. It should look like following image.</h1>
+		<!--<h1>This is homepage. It should look like following image.</h1>
 		<h4>First screenshot</h4>
 		<img src="{% static 'image/branch.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">
 		<h4>Second screenshot</h4>
 		<img src="{% static 'image/criteria.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">
 
 		<h4>Logo, which should on navbar with GTU logo</h4>
-		<img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">
+		<img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">-->
+
 	</div>
 </body>
 </html>
