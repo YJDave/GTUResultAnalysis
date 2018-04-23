@@ -3,18 +3,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!-- Bootstrap css -->
+	<link rel="stylesheet" href='{% static "bs/css/bootstrap.min.css" %}'>
+	<link rel="stylesheet" href='{% static "bs/css/bootstrap-grid.min.css" %}'>
+	<link rel="stylesheet" href='{% static "bs/css/bootstrap-reboot.min.css" %}'>
+
+	<!-- Bootstrap js -->
+	<script src="{% static 'bs/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'bs/js/bootstrap.bundle.min.js' %}"></script>
+
+	<!-- Custom stylesheet -->
     <link rel="stylesheet" href='{% static "css/home.css" %}'></head>
 </head>
 <body>
-	<!-- You should comment out following code, when you start working on real design! -->
-	<h1>This is homepage. It should look like following image.</h1>
-	<h4>First screenshot</h4>
-	<img src="{% static 'image/branch.png' %}" class="image">
-	<h4>Second screenshot</h4>
-	<img src="{% static 'image/criteria.png' %}" class="image">
+	<div class="container">
+		<!-- You should comment out following code, when you start working on real design! -->
+		<h1>This is homepage. It should look like following image.</h1>
+		<h4>First screenshot</h4>
+		<img src="{% static 'image/branch.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">
+		<h4>Second screenshot</h4>
+		<img src="{% static 'image/criteria.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">
 
-	<h4>Logo, which should on navbar with GTU logo</h4>
-	<img src="{% static 'image/logo.png' %}" class="image">
-
+		<h4>Logo, which should on navbar with GTU logo</h4>
+		<img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">
+	</div>
 </body>
 </html>
