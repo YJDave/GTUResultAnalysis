@@ -1,1 +1,20 @@
-<h1>This is homepage. It should look like following image.</h1>
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href='{% static "css/home.css" %}'></head>
+</head>
+<body>
+	<!-- You should comment out following code, when you start working on real design! -->
+	<h1>This is homepage. It should look like following image.</h1>
+	<h4>First screenshot</h4>
+	<img src="{% static 'image/branch.png' %}" class="image">
+	<h4>Second screenshot</h4>
+	<img src="{% static 'image/criteria.png' %}" class="image">
+
+	<h4>Logo, which should on navbar with GTU logo</h4>
+	<img src="{% static 'image/logo.png' %}" class="image">
+
+</body>
+</html>
