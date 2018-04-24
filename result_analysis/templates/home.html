@@ -9,8 +9,8 @@
  -->
 	<!-- Bootstrap js -->
 	<script src="{% static 'bs/js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'bs/js/bootstrap.bundle.min.js' %}"></script>
-		<!-- Custom stylesheet -->
+
+	<!-- Custom stylesheet -->
     <link rel="stylesheet" href='{% static "css/home.css" %}'></head>
 
     <!-- Custom js -->
@@ -23,21 +23,42 @@
     <nav class="navbar navbar-light bg-light">
 	  <a class="navbar-brand" href="#">
 	    <img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image" />
-	    <h1 style="margin-left: 130px;">Gujarat Technological University <br />Ahmedabad</h1>
+	    <h4 style="margin-left: 90px;">Gujarat Technological University <br />Ahmedabad</h4>
 	  </a>
 	</nav>
 	<marquee direction="left" style="background-color:white">Cancel Status of student at the time of exam form generation and hall-ticket generation, if system found any issues, then system will automatically be cancelled.</marquee>
-		<br>
-	<div class="card card-block bg-faded">
-		<div class="btn-group" >
-			<button>Home</button>
-			<button>Re-check</button>
-			<button>Elective</button>
-			<button>Exam Form</button>
-			<button>Exam data Reports</button>
-			<button>Others</button>
-			<button>Staff</button>
-		</div>
+	<br>
+	<nav class="navbar navbar-expand-sm navbar-dark py-lg-4" id="mainNav" style="padding: 10px;">
+      <div class="container">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item active px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="index.html">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="#">Re-check</a>
+            </li>
+            <li class="nav-item px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="#">Elective</a>
+            </li>
+            <li class="nav-item px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="#">Exam Form</a>
+            </li>
+            <li class="nav-item px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="#">Exam Data Reports</a>
+            </li>
+            <li class="nav-item px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="#">Others</a>
+            </li>
+            <li class="nav-item px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="#">Staff</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>	<div class="card card-block bg-faded">
 		<div style="background-color:white">
 			<h5 style="background-color:#2db300">Result Analysis:
 				<select>
