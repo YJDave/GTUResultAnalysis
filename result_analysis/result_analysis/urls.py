@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from .views import (
+from resultapp.views import (
 	HomePage,
 )
 
