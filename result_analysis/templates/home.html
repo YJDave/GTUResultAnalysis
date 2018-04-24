@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Bootstrap css -->
 	<link rel="stylesheet" href='{% static "bs/css/bootstrap.min.css" %}'>
 <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -18,7 +20,9 @@
 
     <title>GTU | Result Analysis</title>
 </head>
+
 <body style="background-color:#196767">
+	<div class="container">
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light">
 	  <a class="navbar-brand" href="#">
@@ -26,41 +30,44 @@
 	    <h4 style="margin-left: 90px;">Gujarat Technological University <br />Ahmedabad</h4>
 	  </a>
 	</nav>
+	
 	<marquee direction="left" style="background-color:white">Cancel Status of student at the time of exam form generation and hall-ticket generation, if system found any issues, then system will automatically be cancelled.</marquee>
 	<br>
-	<nav class="navbar navbar-expand-sm navbar-dark py-lg-4" id="mainNav" style="padding: 10px;">
-      <div class="container">
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item active px-lg-4">
-              <a class="nav-link text-uppercase text-expanded" href="index.html">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item px-lg-4">
-              <a class="nav-link text-uppercase text-expanded" href="#">Re-check</a>
-            </li>
-            <li class="nav-item px-lg-4">
-              <a class="nav-link text-uppercase text-expanded" href="#">Elective</a>
-            </li>
-            <li class="nav-item px-lg-4">
-              <a class="nav-link text-uppercase text-expanded" href="#">Exam Form</a>
-            </li>
-            <li class="nav-item px-lg-4">
-              <a class="nav-link text-uppercase text-expanded" href="#">Exam Data Reports</a>
-            </li>
-            <li class="nav-item px-lg-4">
-              <a class="nav-link text-uppercase text-expanded" href="#">Others</a>
-            </li>
-            <li class="nav-item px-lg-4">
-              <a class="nav-link text-uppercase text-expanded" href="#">Staff</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>	<div class="card card-block bg-faded">
+
+
+	<nav class="navbar navbar-expand-sm navbar-dark" id="mainNav">
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav mx-auto">
+					<li class="nav-item active ">
+						<a class="nav-link text-uppercase text-expanded" href="index.html">Home
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+					<li class="nav-item ">
+						<a class="nav-link text-uppercase text-expanded" href="#">Re-check</a>
+					</li>
+					<li class="nav-item ">
+						<a class="nav-link text-uppercase text-expanded" href="#">Elective</a>
+					</li>
+					<li class="nav-item ">
+						<a class="nav-link text-uppercase text-expanded" href="#">Exam Form</a>
+					</li>
+					<li class="nav-item ">
+						<a class="nav-link text-uppercase text-expanded" href="#">Exam Data Reports</a>
+					</li>
+					<li class="nav-item ">
+						<a class="nav-link text-uppercase text-expanded" href="#">Others</a>
+					</li>
+					<li class="nav-item ">
+						<a class="nav-link text-uppercase text-expanded" href="#">Staff</a>
+					</li>
+				</ul>
+			</div>
+	</nav>	
+
+		<div class="card card-block bg-faded">
 		<div style="background-color:white">
-			<h5 style="background-color:#2db300">Result Analysis:
+			<h5 style="background-color:rgb(100,230,100)">Result Analysis:
 				<select>
 					<option value="W2017">W2017</option>
 					<option value="W2016">W2016</option>
@@ -104,6 +111,7 @@
 			</center>
 		</div>
 	</div>
+</div>
 		<!-- You should comment out following code, when you start working on real design! -->
 		<!--<h1>This is homepage. It should look like following image.</h1>
 		<h4>First screenshot</h4>
