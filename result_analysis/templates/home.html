@@ -5,79 +5,84 @@
 <head>
 	<!-- Bootstrap css -->
 	<link rel="stylesheet" href='{% static "bs/css/bootstrap.min.css" %}'>
-	<link rel="stylesheet" href='{% static "bs/css/bootstrap-grid.min.css" %}'>
-	<link rel="stylesheet" href='{% static "bs/css/bootstrap-reboot.min.css" %}'>
-
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+ -->
 	<!-- Bootstrap js -->
 	<script src="{% static 'bs/js/bootstrap.min.js' %}"></script>
 	<script src="{% static 'bs/js/bootstrap.bundle.min.js' %}"></script>
-
-	<!-- Custom stylesheet -->
+		<!-- Custom stylesheet -->
     <link rel="stylesheet" href='{% static "css/home.css" %}'></head>
 
     <!-- Custom js -->
 	<script src="{% static 'js/home.js' %}"></script>
+
+    <title>GTU | Result Analysis</title>
 </head>
 <body style="background-color:#196767">
-	<div class="container">
+    <!-- Navigation -->
+    <nav class="navbar navbar-light bg-light">
+	  <a class="navbar-brand" href="#">
+	    <img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image" />
+	    <h1 style="margin-left: 130px;">Gujarat Technological University <br />Ahmedabad</h1>
+	  </a>
+	</nav>
+	<marquee direction="left" style="background-color:white">Cancel Status of student at the time of exam form generation and hall-ticket generation, if system found any issues, then system will automatically be cancelled.</marquee>
 		<br>
-		<br>
-		<br>
-		<br>
-		<img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image"><h1>Gujarat Technological University<br>Ahmedabad<br></h1>
-		<marquee direction="left" style="background-color:white">Cancel Status of student at the time of exam form generation and hall-ticket generation, if system found any issues, then system will automatically be cancelled.</marquee>
+	<div class="card card-block bg-faded">
 		<div class="btn-group" >
-  		<button>Home</button>
-  		<button>Re-check</button>
-  		<button>Elective</button>
+			<button>Home</button>
+			<button>Re-check</button>
+			<button>Elective</button>
 			<button>Exam Form</button>
 			<button>Exam data Reports</button>
 			<button>Others</button>
 			<button>Staff</button>
 		</div>
 		<div style="background-color:white">
-			<h5 style="background-color:#2db300">Result Analysis:<select>
-  		<option value="W2017">W2017</option>
-  		<option value="W2016">W2016</option>
-  		<option value="W2015">W2015</option>
-  		<option value="W2014">W2014</option>
-		</select>
-	</h5>
-	<br>
-		Branch:
+			<h5 style="background-color:#2db300">Result Analysis:
+				<select>
+					<option value="W2017">W2017</option>
+					<option value="W2016">W2016</option>
+					<option value="W2015">W2015</option>
+					<option value="W2014">W2014</option>
+				</select>
+			</h5>
+			<br>
+			Branch:
 			<select id="branch" name="branch" >
-			<option value="">Select branch</option>
-		 <option class="bs1reg">BE-Sem 1-Regular(DEC-2017)</option>
-     <option class="bs3reg">BE-Sem 3-Regular(DEC-2017)</option>
+				<option value="">Select branch</option>
+		 		<option class="bs1reg">BE-Sem 1-Regular(DEC-2017)</option>
+		 		<option class="bs3reg">BE-Sem 3-Regular(DEC-2017)</option>
 
-	 </select>
-	 <br>
-	 <br>
-	Criteria:
-	<select id="branch" name="branch" >
-	<option value="">Select criteria</option>
- 	<option class="overall">Overall Analysis</option>
- 	<option class="branch">Branchwise Analysis</option>
-	</select>
-	<br>
-	<br>
+			</select>
+			 <br>
+	 		<br>
+			Criteria:
+			<select id="branch" name="branch" >
+			<option value="">Select criteria</option>
+				<option class="overall">Overall Analysis</option>
+				<option class="branch">Branchwise Analysis</option>
+			</select>
+			<br>
+			<br>
 
-	<center>
-		<table border="1" width="75%">
-			<tr>
-				<td>Static</td>
-				<td>data</td>
-			</tr>
-			<tr>
-				<td>is filled</td>
-				<td>here</td>
-			</tr>
-		</table>
-		<br>
-	<a href="#">Download PDF|</a>
-	<a href="#">Cancel Download</a>
-	<center>
+			<center>
+				<table border="1" width="75%">
+					<tr>
+						<td>Static</td>
+						<td>data</td>
+					</tr>
+					<tr>
+						<td>is filled</td>
+						<td>here</td>
+					</tr>
+				</table>
+				<br>
+			<a href="#">Download PDF|</a>
+			<a href="#">Cancel Download</a>
+			</center>
 		</div>
+	</div>
 		<!-- You should comment out following code, when you start working on real design! -->
 		<!--<h1>This is homepage. It should look like following image.</h1>
 		<h4>First screenshot</h4>
@@ -88,6 +93,5 @@
 		<h4>Logo, which should on navbar with GTU logo</h4>
 		<img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">-->
 
-	</div>
 </body>
 </html>

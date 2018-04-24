@@ -3,14 +3,13 @@
 	max-width: 1000px;
 	max-height: 1000px;
 }
-h1{
-	color: white;
 
-}
-.btn-group{
+.btn-group {
 	background-color: grey;
 	width: 100%;
 }
-button{
+
+button {
 	width: 14.5%;
 }
+
