@@ -67,22 +67,19 @@
 
 		<div class="card card-block bg-faded">
 		<div style="background-color:white">
-			<h5 style="background-color:rgb(100,230,100)">Result Analysis:
-				<select>
-					<option value="W2017">W2017</option>
-					<option value="W2016">W2016</option>
-					<option value="W2015">W2015</option>
-					<option value="W2014">W2014</option>
-				</select>
+			<h5 style="background-color:#2db300">
+					Result Session ::
+					<select id="ddl"  onchange="configureDropDownLists(this,document.getElementById('ddl2'))" >
+						<option value="">--Select--</option>
+						<option value="w17">W2017</option>
+						<option value="s17">S2017</option>
+						<option value="w18">W2018</option>
+					</select>
 			</h5>
 			<br>
-			Branch:
-			<select id="branch" name="branch" >
-				<option value="">Select branch</option>
-		 		<option class="bs1reg">BE-Sem 1-Regular(DEC-2017)</option>
-		 		<option class="bs3reg">BE-Sem 3-Regular(DEC-2017)</option>
-
-			</select>
+				Branch :
+				<select id="ddl2">
+				</select>
 			 <br>
 	 		<br>
 			Criteria:
@@ -120,6 +117,7 @@
 		<img src="{% static 'image/criteria.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">
 
 		<h4>Logo, which should on navbar with GTU logo</h4>
+
 		<img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">-->
 
 </body>
