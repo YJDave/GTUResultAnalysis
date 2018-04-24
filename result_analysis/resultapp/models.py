@@ -1,6 +1,6 @@
 from django.db import models
 
-class program(models.Model):
+class Result(models.Model):
 	St_Id=models.CharField(max_length=250)
 	extype=models.CharField(max_length=250)
 	examid	=models.CharField(max_length=250)
