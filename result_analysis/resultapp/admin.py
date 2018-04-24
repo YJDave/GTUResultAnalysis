@@ -5,7 +5,7 @@ from .models import Result
 class ResultAdmin(admin.ModelAdmin):
 	list_display = ["St_Id", "extype", "examid", "exam", "DECLARATIONDATE",
 					"AcademicYear", "sem", "name", "instcode", "instName",
-					"CourseName"]
+					"CourseName", "BR_CODE", "BR_NAME", "SPI", "CPI", "CGPA", "RESULT"]
 	class Meta:
 		model = Result
 

@@ -21,7 +21,7 @@
     <title>GTU | Result Analysis</title>
 </head>
 
-<body style="background-color:#196767">
+<body style='background: url({% static "image/background.jpg" %})'>
 	<div class="container">
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light">
@@ -31,7 +31,7 @@
 	  </a>
 	</nav>
 	
-	<marquee direction="left" style="background-color:white">Cancel Status of student at the time of exam form generation and hall-ticket generation, if system found any issues, then system will automatically be cancelled.</marquee>
+	<marquee direction="left" style="background-color:white; color: red;">Cancel Status of student at the time of exam form generation and hall-ticket generation, if system found any issues, then system will automatically be cancelled.</marquee>
 	<br>
 
 
@@ -92,15 +92,24 @@
 			<br>
 
 			<center>
-				<table border="1" width="75%">
+				<table border="1" width="10%">
+					{% for c in column %}
+					<th>{{ c }}</th>
+					{% endfor %}
+					{% for r in row %}
 					<tr>
-						<td>Static</td>
-						<td>data</td>
+						<td>{{ r.sem }}</td>
+						<td>{{ r.name }}</td>
+						<td>{{ r.instcode }}</td>
+						<td>{{ r.instName }}</td>
+						<td>{{ r.BR_CODE }}</td>
+						<td>{{ r.BR_NAME }}</td>
+						<td>{{ r.SPI }}</td>
+						<td>{{ r.CPI }}</td>
+						<td>{{ r.CGPA }}</td>
+						<td>{{ r.RESULT }}</td>
 					</tr>
-					<tr>
-						<td>is filled</td>
-						<td>here</td>
-					</tr>
+					{% endfor %}
 				</table>
 				<br>
 			<a href="#">Download PDF|</a>
