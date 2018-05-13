@@ -47,16 +47,48 @@
 				return;
 			}
 
+			function fill_table(table, data) {
+				var columns = data["column"]
+				var headers = table.insertRow(0);
+				console.log(data, "HE", data.column)
+				for(var i = 0; i < columns.length; i++) {
+					console.log(columns[i], columns, i)
+					var header = headers.insertCell(i);
+					header.innerHTML = columns[i];
+				}
+			}
+
+			function fill_all_tables_data(div_element, table_data) {
+				console.log(table_data)
+				var no_of_tables = Object.keys(table_data);
+				console.log(no_of_tables)
+				for(var i in no_of_tables) {
+					var table_name = no_of_tables[i];
+					var table_ele = document.createElement("table");
+					table_ele.setAttribute("id", table_name);
+					table_ele.setAttribute("class", "table table-bordered")
+					console.log(table_name, table_data[table_name]);
+					fill_table(table_ele, table_data[table_name]);
+					div_element[0].appendChild(table_ele);
+				}
+			}
+
 			function do_ajax_request() {
 				$.ajax({
 					url: '/filter/',
 					data: {
-						'username': username
+						'year': $("#session")[0].value,
+						'branch': $("#branch")[0].value,
+						'criteria': $("#criteria")[0].value,
+						'institute': $("#institute")[0].value,
 					},
 					dataType: 'json',
 					success: function (data) {
-						if (data.is_taken) {
-						    alert("A user with this username already exists.");
+						console.log(data);
+						if (data["error-msg"] !== undefined) {
+							$("#error-msg").text(data["error-msg"])
+						} else {
+							fill_all_tables_data($("#filter_data"), data["result"]);
 						}
 					}
 				});
@@ -87,8 +119,17 @@
 					$("#institute").parent().show();
 				} else {
 					$("#institute").parent().hide();
+					do_ajax_request();
 				}
-			})
+			});
+
+			$("#institute").on("change", function () {
+				if (this.value === "") {
+					return;
+				} else {
+					do_ajax_request();
+				}
+			});
 
 		});
 
@@ -151,6 +192,7 @@
 					<option value="">Select session</option>
 				</select>
 			</h5>
+			<div id="error-msg" class="alert-danger"></div>
 			<br>
 				Branch :
 				<select id="branch">
@@ -173,7 +215,8 @@
 			<br>				
 			</div>
 			<center>
-				<table border="1" width="10%">
+				<div id="filter_data"></div>
+<!-- 				<table border="1" width="10%" id="filter_data">
 					{% for c in column %}
 					<th>{{ c }}</th>
 					{% endfor %}
@@ -192,23 +235,12 @@
 					</tr>
 					{% endfor %}
 				</table>
-				<br>
+ -->				<br>
 			<a href="#">Download PDF|</a>
 			<a href="#">Cancel Download</a>
 			</center>
 		</div>
 	</div>
 </div>
-		<!-- You should comment out following code, when you start working on real design! -->
-		<!--<h1>This is homepage. It should look like following image.</h1>
-		<h4>First screenshot</h4>
-		<img src="{% static 'image/branch.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">
-		<h4>Second screenshot</h4>
-		<img src="{% static 'image/criteria.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">
-
-		<h4>Logo, which should on navbar with GTU logo</h4>
-
-		<img src="{% static 'image/logo.png' %}" class="img-fluid img-thumbnail image" alt="Responsive image">-->
-
 </body>
 </html>
