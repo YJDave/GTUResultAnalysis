@@ -12,11 +12,60 @@
 	<!-- Bootstrap js -->
 	<script src="{% static 'bs/js/bootstrap.min.js' %}"></script>
 
+	<!-- Jquery -->
+	<script src="{% static 'jquery/jquery-3.3.1.min.js' %}"></script>
+
 	<!-- Custom stylesheet -->
-    <link rel="stylesheet" href='{% static "css/home.css" %}'></head>
+    <link rel="stylesheet" href='{% static "css/home.css" %}'>
 
     <!-- Custom js -->
-	<script src="{% static 'js/home.js' %}"></script>
+	<script type="text/javascript">
+		$(function() {
+			// Do not change this variable
+		    var dropdownData = {{ dropdown_data | safe }};
+
+			function reset_dropdown(dropdown) {
+				var first_op = dropdown.children()[0];
+				dropdown.html(first_op);
+				return;
+			}
+
+		    function get_branches_of_session(session) {
+				return dropdownData[session];
+		    }
+
+			function fill_dropdown_options(dropdown, options) {
+				reset_dropdown(dropdown);
+				for(var i = 0; i < options.length; i++) {
+					var opt = document.createElement('option');
+					opt.innerHTML = options[i];
+					opt.value = options[i];
+					dropdown[0].appendChild(opt);
+				}
+				return;
+			}
+
+		    // Fill the dropdown
+		    var session = Object.keys(dropdownData);
+		    fill_dropdown_options($("#session"), session)
+
+			// Event listener
+			$("#session").on("change", function () {
+				if (this.value === "") {
+					reset_dropdown($("#branch"));
+				}
+				else {
+					var selected_session = this.value;
+					var branches = get_branches_of_session(selected_session);
+					fill_dropdown_options($("#branch"), branches);
+				}
+			});
+
+		});
+
+
+
+	</script>
 
     <title>GTU | Result Analysis</title>
 </head>
@@ -68,29 +117,26 @@
 		<div class="card card-block bg-faded">
 		<div style="background-color:white">
 			<h5 style="background-color:#2db300">
-					Result Session ::
-					<select id="ddl"  onchange="configureDropDownLists(this,document.getElementById('ddl2'))" >
-						<option value="">--Select--</option>
-						<option value="w17">W2017</option>
-						<option value="s17">S2017</option>
-						<option value="w18">W2018</option>
-					</select>
+				Result Session ::
+				<select id="session">
+					<option value="">Select session</option>
+				</select>
 			</h5>
 			<br>
 				Branch :
-				<select id="ddl2">
+				<select id="branch">
+					<option value="">Select branch</option>
 				</select>
-			 <br>
+			<br>
 	 		<br>
-			Criteria:
-			<select id="branch" name="branch" >
-			<option value="">Select criteria</option>
-				<option class="overall">Overall Analysis</option>
-				<option class="branch">Branchwise Analysis</option>
-			</select>
+				Criteria:
+				<select id="criteria">
+					<option value="">Select criteria</option>
+					<option class="overall">Overall Analysis</option>
+					<option class="branch">Branchwise Analysis</option>
+				</select>
 			<br>
 			<br>
-
 			<center>
 				<table border="1" width="10%">
 					{% for c in column %}
