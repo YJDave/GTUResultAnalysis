@@ -132,14 +132,43 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 	except Result.DoesNotExist:
 		rows = {}
 
-	filter_data["Branch wise filter of institute"] = {"row": rows, "column": columns}
+	filter_data["Branch CPI wise filter of institute"] = {"row": rows, "column": columns}
 	return filter_data
 
 def doInstituteBranchGenderWiseFilter(year, branch, institute):
 	pass
 
 def doInstituteSubjectWiseFilter(year, branch, institute):
-	return
+	# Pass, Fail, Total, Percentage
+	filter_data = {}
+	columns = ["Subject Name", "Branch Code", "Total", "Pass", "Fail", "Percentage"]
+	try:
+		all_subjects = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)
+		no_of_subjects = all_subjects.values_list("SUB1NA", "BR_CODE").distinct()
+
+		rows = {}
+		i = 0;
+		for subject in no_of_subjects:
+			subject_name, br_code = subject
+			rows[i] = {}
+			rows[i]["Subject Name"] = subject_name
+			rows[i]["Branch Code"] = br_code
+
+			results = all_subjects.filter(SUB1NA=subject_name, BR_CODE=br_code)
+
+			rows[i]["Total"] = results.count()
+			rows[i]["Pass"] = results.filter(RESULT="PASS").count()
+			rows[i]["Fail"] = results.filter(RESULT="FAIL").count()
+			if rows[i]["Total"] is not 0:
+				rows[i]["Percentage"] = round(rows[i]["Pass"] / rows[i]["Total"] * 100, 2);
+			else:
+				rows[i]["Percentage"] = 0
+			i += 1
+	except Result.DoesNotExist:
+		rows = {}
+
+	filter_data["Branch Subject wise filter of institute"] = {"row": rows, "column": columns}
+	return filter_data
 
 def filterData(data):
 	if data["criteria"] == "Overall":
