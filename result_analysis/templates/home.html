@@ -7,13 +7,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Bootstrap css -->
 	<link rel="stylesheet" href='{% static "bs/css/bootstrap.min.css" %}'>
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
- -->
+
 	<!-- Bootstrap js -->
 	<script src="{% static 'bs/js/bootstrap.min.js' %}"></script>
 
 	<!-- Jquery -->
 	<script src="{% static 'jquery/jquery-3.3.1.min.js' %}"></script>
+
+	<!-- Google charts -->
+    <script src="{% static 'gcharts/loader.js' %}"></script>
 
 	<!-- Custom stylesheet -->
     <link rel="stylesheet" href='{% static "css/home.css" %}'>
@@ -25,6 +27,16 @@
 		    var dropdownData = {{ dropdown_data | safe }};
 		    var filterData = {{ filters | safe }}
 		    var instituteData = {{ institutes | safe }}
+			google.charts.load('current', {packages:['corechart']});
+
+			function getRandomColor() {
+				var letters = '0123456789ABCDEF';
+				var color = '#';
+				for (var i = 0; i < 6; i++) {
+				color += letters[Math.floor(Math.random() * 16)];
+				}
+				return color;
+			}
 
 			function reset_dropdown(dropdown) {
 				var first_op = dropdown.children()[0];
@@ -68,6 +80,69 @@
 				}
 			}
 
+			function draw_charts(table_data) {
+				if (table_data['chart-data'] !== undefined) {
+					var no_of_charts = Object.keys(table_data['chart-data']);
+					console.log(no_of_charts);
+					for (var i = 0; i < no_of_charts.length; i++) {
+						var chart_data = table_data["chart-data"][no_of_charts[i]];
+						console.log(chart_data)
+						if (chart_data["type"] === "pie") {
+							draw_pie_chart(chart_data["column_data"],
+										   chart_data["row_data"],
+										   chart_data["options"]["title"])
+						}
+					}
+				}
+			}
+
+			function draw_pie_chart(column_data, row_data, title) {
+				var data = new google.visualization.DataTable();
+				for (var key in column_data) {
+				    if (column_data.hasOwnProperty(key)) {
+				        data.addColumn(key, column_data[key])
+				    }
+				}
+				data.addRows(row_data)
+
+				// var data = google.visualization.arrayToDataTable(data_array);
+
+				var options = {
+				  title: title,
+				  is3D: true,
+				};
+
+				var pie_chart = document.createElement("div");
+				pie_chart.setAttribute("id", title);
+				$("#chart_container")[0].appendChild(pie_chart);
+				var chart = new google.visualization.PieChart(document.getElementById(title));
+				chart.draw(data, options);
+			}
+
+			function draw_bar_chart(chart_div, c_title, h_axis_title, v_axis_title, max_value) {
+				var data = google.visualization.arrayToDataTable([
+					 ['Element', 'Density', { role: 'style' }],
+					 ['Copper', 8.94, '#b87333'],
+					 ['Silver', 10.49, 'silver'],
+					 ['Gold', 19.30, 'gold'],
+					 ['Platinum', 21.45, 'color: #e5e4e2' ],
+				]);
+				var options = {
+				        title: c_title,
+				        chartArea: {width: '50%'},
+				        hAxis: {
+				          title: h_axis_title,
+				          minValue: 0,
+				          maxValue: max_value,
+				        },
+				        vAxis: {
+				          title: v_axis_title,
+				        }
+				      };
+				var chart = new google.visualization.BarChart(chart_div);
+				chart.draw(data, options);
+			}
+
 			function fill_table(table, data) {
 				fill_table_rows(table, data["row"], data["column"]);
 			}
@@ -91,6 +166,9 @@
 					console.log(table_name, table_data[table_name]);
 					fill_table(table_ele, table_data[table_name]);
 					div_element[0].appendChild(table_ele);
+
+					// Append chart
+					google.charts.setOnLoadCallback(draw_charts(table_data[table_name]));
 				}
 			}
 
@@ -240,6 +318,8 @@
 			<center>
 				<div id="filter_data"></div>
 				<br>
+				<div id="chart_container">
+				</div>
 			<a href="#">Download PDF|</a>
 			<a href="#">Cancel Download</a>
 			</center>

@@ -109,6 +109,7 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 	# Pass, Fail, Total, Percentage
 	filter_data = {}
 	columns = ["Branch Code", "Branch Name", "Total", "CPI > 6", "CPI > 7", "CPI > 8", "CPI > 9"]
+	chart_data = {}
 	try:
 		all_branches = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)
 		no_of_branches = all_branches.values_list("BR_CODE", "BR_NAME").distinct()
@@ -116,6 +117,7 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 		rows = {}
 		i = 0;
 		for branch in no_of_branches:
+			chart_row_data = []
 			br_code, br_name = branch
 			rows[i] = {}
 			rows[i]["Branch Code"] = br_code
@@ -128,11 +130,23 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 			rows[i]["CPI > 7"] = results.filter(CPI__startswith='7').count()
 			rows[i]["CPI > 8"] = results.filter(CPI__startswith='8').count()
 			rows[i]["CPI > 9"] = results.filter(CPI__startswith='9').count()
+
+			chart_row_data = [["CPI > 6", rows[i]["CPI > 6"]],
+								  ["CPI > 7", rows[i]["CPI > 7"]],
+								  ["CPI > 8", rows[i]["CPI > 8"]],
+								  ["CPI > 9", rows[i]["CPI > 9"]]]
+			chart_data[br_name] = {} 
+			chart_data[br_name] = {"column_data": {'number': "No of students", "string": "CPI Result"},
+							       "row_data": chart_row_data,
+					               "options": {"title": br_name},
+					               "type": "pie"}
 			i += 1
+
 	except Result.DoesNotExist:
 		rows = {}
 
-	filter_data["Branch CPI wise filter of institute"] = {"row": rows, "column": columns}
+	filter_data["Branch CPI wise filter of institute"] = {"row": rows, "column": columns,
+														  "chart-data": chart_data}
 	return filter_data
 
 def doInstituteBranchGenderWiseFilter(year, branch, institute):
