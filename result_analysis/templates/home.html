@@ -47,15 +47,25 @@
 				return;
 			}
 
-			function fill_table(table, data) {
-				var columns = data["column"]
-				var headers = table.insertRow(0);
-				console.log(data, "HE", data.column)
+			function fill_table_rows(table, rows, columns) {
+				// First insert headers
+				var headers = table.insertRow(-1);
 				for(var i = 0; i < columns.length; i++) {
-					console.log(columns[i], columns, i)
 					var header = headers.insertCell(i);
 					header.innerHTML = columns[i];
 				}
+
+				for(var j = 0; j < Object.keys(rows).length; j++) {
+					var t_row = table.insertRow(j);
+					for(var i = 0; i < columns.length; i++) {
+						var t_column = t_row.insertCell(i);
+						t_column.innerHTML = rows[j][columns[i]];
+					}
+				}
+			}
+
+			function fill_table(table, data) {
+				fill_table_rows(table, data["row"], data["column"]);
 			}
 
 			function fill_all_tables_data(div_element, table_data) {
@@ -63,6 +73,12 @@
 				var no_of_tables = Object.keys(table_data);
 				console.log(no_of_tables)
 				for(var i in no_of_tables) {
+					// Append table header
+					var table_header = document.createElement("h4");
+					table_header.innerHTML = no_of_tables[i];
+					div_element[0].appendChild(table_header);
+
+					// Append table
 					var table_name = no_of_tables[i];
 					var table_ele = document.createElement("table");
 					table_ele.setAttribute("id", table_name);
@@ -216,26 +232,7 @@
 			</div>
 			<center>
 				<div id="filter_data"></div>
-<!-- 				<table border="1" width="10%" id="filter_data">
-					{% for c in column %}
-					<th>{{ c }}</th>
-					{% endfor %}
-					{% for r in row %}
-					<tr>
-						<td>{{ r.sem }}</td>
-						<td>{{ r.name }}</td>
-						<td>{{ r.instcode }}</td>
-						<td>{{ r.instName }}</td>
-						<td>{{ r.BR_CODE }}</td>
-						<td>{{ r.BR_NAME }}</td>
-						<td>{{ r.SPI }}</td>
-						<td>{{ r.CPI }}</td>
-						<td>{{ r.CGPA }}</td>
-						<td>{{ r.RESULT }}</td>
-					</tr>
-					{% endfor %}
-				</table>
- -->				<br>
+				<br>
 			<a href="#">Download PDF|</a>
 			<a href="#">Cancel Download</a>
 			</center>

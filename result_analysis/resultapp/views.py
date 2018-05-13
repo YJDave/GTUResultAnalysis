@@ -47,17 +47,31 @@ def validateFilterData(data):
 def doOverallFilter(year, branch):
 	# Pass, Fail, Total, Percentage
 	filter_data = {}
+	columns = ["Semester", "Name", "Institute Name", "Institute Code", "Branch Code", "Branch Name",
+			   "SPI", "CPI", "CGPA", "RESULT"]
 	try:
-		row = serializers.serialize("json", Result.objects.filter(AcademicYear=year, exam=branch).only(
+		results = Result.objects.filter(AcademicYear=year, exam=branch).only(
 			  "sem", "name", "instcode", "instName", "BR_CODE", "BR_NAME",
-			  "SPI", "CPI", "CGPA", "RESULT"),
-			  fields=("sem", "name", "instcode", "instName", "BR_CODE", "BR_NAME",
-			  "SPI", "CPI", "CGPA", "RESULT"))
+			  "SPI", "CPI", "CGPA", "RESULT")
+		rows = {}
+		i = 0;
+		for result in results:
+			rows[i] = {}
+			rows[i]["Semester"] = result.sem
+			rows[i]["Name"] = result.name
+			rows[i]["Institute Name"] = result.instName
+			rows[i]["Institute Code"] = result.instcode
+			rows[i]["Branch Code"] = result.BR_CODE
+			rows[i]["Branch Name"] = result.BR_NAME
+			rows[i]["SPI"] = result.SPI
+			rows[i]["CPI"] = result.CPI
+			rows[i]["CGPA"] = result.CGPA
+			rows[i]["RESULT"] = result.RESULT
+			i += 1
 	except Result.DoesNotExist:
-		row = {}
-	column = ["sem", "name", "instcode", "instName", "BR_CODE", "BR_NAME",
-			  "SPI", "CPI", "CGPA", "RESULT"]
-	filter_data["All students result"] = {"row": row, "column": column}
+		rows = {}
+
+	filter_data["All students result"] = {"row": rows, "column": columns}
 	return filter_data
 
 def doInstituteBranchWiseFilter(year, branch, institute):
