@@ -106,10 +106,37 @@ def doInstituteBranchWiseFilter(year, branch, institute):
 	return filter_data
 
 def doInstituteBranchCPIWiseFilter(year, branch, institute):
-	return
+	# Pass, Fail, Total, Percentage
+	filter_data = {}
+	columns = ["Branch Code", "Branch Name", "Total", "CPI > 6", "CPI > 7", "CPI > 8", "CPI > 9"]
+	try:
+		all_branches = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)
+		no_of_branches = all_branches.values_list("BR_CODE", "BR_NAME").distinct()
+
+		rows = {}
+		i = 0;
+		for branch in no_of_branches:
+			br_code, br_name = branch
+			rows[i] = {}
+			rows[i]["Branch Code"] = br_code
+			rows[i]["Branch Name"] = br_name
+
+			results = all_branches.filter(BR_CODE=br_code, BR_NAME=br_name)
+
+			rows[i]["Total"] = results.count()
+			rows[i]["CPI > 6"] = results.filter(CPI__startswith='6').count()
+			rows[i]["CPI > 7"] = results.filter(CPI__startswith='7').count()
+			rows[i]["CPI > 8"] = results.filter(CPI__startswith='8').count()
+			rows[i]["CPI > 9"] = results.filter(CPI__startswith='9').count()
+			i += 1
+	except Result.DoesNotExist:
+		rows = {}
+
+	filter_data["Branch wise filter of institute"] = {"row": rows, "column": columns}
+	return filter_data
 
 def doInstituteBranchGenderWiseFilter(year, branch, institute):
-	return
+	pass
 
 def doInstituteSubjectWiseFilter(year, branch, institute):
 	return

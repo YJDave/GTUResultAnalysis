@@ -139,6 +139,7 @@
 				if (this.value.toLowerCase().indexOf("institute") > -1) {
 					$("#institute").parent().show();
 				} else {
+					// FIX: Set default value in dropdown.
 					$("#institute").parent().hide();
 					do_ajax_request();
 				}
