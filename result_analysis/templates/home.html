@@ -32,6 +32,10 @@
 				return;
 			}
 
+			function reset_filter_tables(div_element) {
+				div_element.html("");
+			}
+
 		    function get_branches_of_session(session) {
 				return dropdownData[session];
 		    }
@@ -49,17 +53,17 @@
 
 			function fill_table_rows(table, rows, columns) {
 				// First insert headers
-				var headers = table.insertRow(-1);
+				var headers = table.insertRow(0);
 				for(var i = 0; i < columns.length; i++) {
 					var header = headers.insertCell(i);
 					header.innerHTML = columns[i];
 				}
 
-				for(var j = 0; j < Object.keys(rows).length; j++) {
+				for(var j = 1; j < Object.keys(rows).length; j++) {
 					var t_row = table.insertRow(j);
 					for(var i = 0; i < columns.length; i++) {
 						var t_column = t_row.insertCell(i);
-						t_column.innerHTML = rows[j][columns[i]];
+						t_column.innerHTML = rows[j - 1][columns[i]];
 					}
 				}
 			}
@@ -72,6 +76,7 @@
 				console.log(table_data)
 				var no_of_tables = Object.keys(table_data);
 				console.log(no_of_tables)
+				reset_filter_tables(div_element)
 				for(var i in no_of_tables) {
 					// Append table header
 					var table_header = document.createElement("h4");

@@ -47,17 +47,16 @@ def validateFilterData(data):
 def doOverallFilter(year, branch):
 	# Pass, Fail, Total, Percentage
 	filter_data = {}
-	columns = ["Semester", "Name", "Institute Name", "Institute Code", "Branch Code", "Branch Name",
+	columns = ["Name", "Institute Name", "Institute Code", "Branch Code", "Branch Name",
 			   "SPI", "CPI", "CGPA", "RESULT"]
 	try:
 		results = Result.objects.filter(AcademicYear=year, exam=branch).only(
-			  "sem", "name", "instcode", "instName", "BR_CODE", "BR_NAME",
+			  "name", "instcode", "instName", "BR_CODE", "BR_NAME",
 			  "SPI", "CPI", "CGPA", "RESULT")
 		rows = {}
 		i = 0;
 		for result in results:
 			rows[i] = {}
-			rows[i]["Semester"] = result.sem
 			rows[i]["Name"] = result.name
 			rows[i]["Institute Name"] = result.instName
 			rows[i]["Institute Code"] = result.instcode
@@ -75,7 +74,36 @@ def doOverallFilter(year, branch):
 	return filter_data
 
 def doInstituteBranchWiseFilter(year, branch, institute):
-	return
+	# Pass, Fail, Total, Percentage
+	filter_data = {}
+	columns = ["Branch Code", "Branch Name", "Total", "Pass", "Fail", "Percentage"]
+	try:
+		all_branches = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)
+		no_of_branches = all_branches.values_list("BR_CODE", "BR_NAME").distinct()
+
+		rows = {}
+		i = 0;
+		for branch in no_of_branches:
+			br_code, br_name = branch
+			rows[i] = {}
+			rows[i]["Branch Code"] = br_code
+			rows[i]["Branch Name"] = br_name
+
+			results = all_branches.filter(BR_CODE=br_code, BR_NAME=br_name)
+
+			rows[i]["Total"] = results.count()
+			rows[i]["Pass"] = results.filter(RESULT="PASS").count()
+			rows[i]["Fail"] = results.filter(RESULT="FAIL").count()
+			if rows[i]["Total"] is not 0:
+				rows[i]["Percentage"] = round(rows[i]["Pass"] / rows[i]["Total"] * 100, 2);
+			else:
+				rows[i]["Percentage"] = 0
+			i += 1
+	except Result.DoesNotExist:
+		rows = {}
+
+	filter_data["Branch wise filter of institute"] = {"row": rows, "column": columns}
+	return filter_data
 
 def doInstituteBranchCPIWiseFilter(year, branch, institute):
 	return
