@@ -24,6 +24,7 @@
 			// Do not change these variable
 		    var dropdownData = {{ dropdown_data | safe }};
 		    var filterData = {{ filters | safe }}
+		    var instituteData = {{ institutes | safe }}
 
 			function reset_dropdown(dropdown) {
 				var first_op = dropdown.children()[0];
@@ -46,9 +47,25 @@
 				return;
 			}
 
-		    // Fill the dropdown
-		    fill_dropdown_options($("#session"), Object.keys(dropdownData));
-		    fill_dropdown_options($("#criteria"), Object.keys(filterData));
+			function do_ajax_request() {
+				$.ajax({
+					url: '/filter/',
+					data: {
+						'username': username
+					},
+					dataType: 'json',
+					success: function (data) {
+						if (data.is_taken) {
+						    alert("A user with this username already exists.");
+						}
+					}
+				});
+			}
+
+			// Fill the dropdown
+			fill_dropdown_options($("#session"), Object.keys(dropdownData));
+			fill_dropdown_options($("#criteria"), Object.keys(filterData));
+			fill_dropdown_options($("#institute"), Object.keys(instituteData));
 
 			// Event listener
 			$("#session").on("change", function () {
@@ -61,6 +78,17 @@
 					fill_dropdown_options($("#branch"), branches);
 				}
 			});
+
+			$("#criteria").on("change", function () {
+				if (this.value === "") {
+					return;
+				}
+				if (this.value.toLowerCase().indexOf("institute") > -1) {
+					$("#institute").parent().show();
+				} else {
+					$("#institute").parent().hide();
+				}
+			})
 
 		});
 
@@ -136,6 +164,14 @@
 				</select>
 			<br>
 			<br>
+			<div style="display: none;">
+				Institute:
+				<select id="institute">
+					<option value="">Select institute</option>
+				</select>
+			<br>
+			<br>				
+			</div>
 			<center>
 				<table border="1" width="10%">
 					{% for c in column %}

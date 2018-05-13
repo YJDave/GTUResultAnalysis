@@ -4,7 +4,7 @@ from .models import Result
 # from django.utils import simplejson
 import json
 
-def fillDropdown():
+def getResultSession():
 	result_dict = {}
 
 	years = Result.objects.values_list("AcademicYear", "exam")
@@ -28,11 +28,26 @@ def getAvaliableFilters():
 	return {"Overall": 0, "Institute Branch wise": 1, "Institute Branch CPI wise": 2,
 			"Institute Branch Gender wise": 3, "Institute Subject wise": 4}
 
+def getAllInstitute():
+	result_dict = {}
+	institutes = Result.objects.values_list("instcode", "instName")
+	inst_set = set(institutes)
+	print("Successfully fetch institutes!")
+	for inst in inst_set:
+		code, name = inst
+		result_dict[name] = code
+	return result_dict
+
+def FilterHomePage(request):
+	return render(request, "home.html", {})
+
 def HomePage(request):
 	column = ["sem", "name", "instcode", "instName", "BR_CODE", "BR_NAME",
 					"SPI", "CPI", "CGPA", "RESULT"]
 
-	js_dropdown_data = json.dumps(fillDropdown())
+	js_dropdown_data = json.dumps(getResultSession())
 	js_filter_data = json.dumps(getAvaliableFilters())
+	js_institute_data = json.dumps(getAllInstitute())
 	return render(request, "home.html", {"dropdown_data": js_dropdown_data,
-										 "filters": js_filter_data})
+										 "filters": js_filter_data,
+										 "institutes": js_institute_data})
