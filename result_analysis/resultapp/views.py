@@ -24,12 +24,15 @@ def fillDropdown():
 			print("==== ERROR ====, Year and exam set does not match with each other")
 	return result_dict
 
+def getAvaliableFilters():
+	return {"Overall": 0, "Institute Branch wise": 1, "Institute Branch CPI wise": 2,
+			"Institute Branch Gender wise": 3, "Institute Subject wise": 4}
+
 def HomePage(request):
 	column = ["sem", "name", "instcode", "instName", "BR_CODE", "BR_NAME",
 					"SPI", "CPI", "CGPA", "RESULT"]
-	dropdowns = fillDropdown()
-	print(dropdowns)
 
-	row = Result.objects.all()
-	js_data = json.dumps(dropdowns)
-	return render(request, "home.html", {"dropdown_data": js_data})
+	js_dropdown_data = json.dumps(fillDropdown())
+	js_filter_data = json.dumps(getAvaliableFilters())
+	return render(request, "home.html", {"dropdown_data": js_dropdown_data,
+										 "filters": js_filter_data})

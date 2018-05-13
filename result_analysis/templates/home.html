@@ -21,8 +21,9 @@
     <!-- Custom js -->
 	<script type="text/javascript">
 		$(function() {
-			// Do not change this variable
+			// Do not change these variable
 		    var dropdownData = {{ dropdown_data | safe }};
+		    var filterData = {{ filters | safe }}
 
 			function reset_dropdown(dropdown) {
 				var first_op = dropdown.children()[0];
@@ -46,8 +47,8 @@
 			}
 
 		    // Fill the dropdown
-		    var session = Object.keys(dropdownData);
-		    fill_dropdown_options($("#session"), session)
+		    fill_dropdown_options($("#session"), Object.keys(dropdownData));
+		    fill_dropdown_options($("#criteria"), Object.keys(filterData));
 
 			// Event listener
 			$("#session").on("change", function () {
@@ -132,8 +133,6 @@
 				Criteria:
 				<select id="criteria">
 					<option value="">Select criteria</option>
-					<option class="overall">Overall Analysis</option>
-					<option class="branch">Branchwise Analysis</option>
 				</select>
 			<br>
 			<br>
