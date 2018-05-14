@@ -52,7 +52,7 @@ def doOverallFilter(year, branch):
 	try:
 		results = Result.objects.filter(AcademicYear=year, exam=branch).only(
 			  "name", "instcode", "instName", "BR_CODE", "BR_NAME",
-			  "SPI", "CPI", "CGPA", "RESULT")
+			  "SPI", "CPI", "CGPA", "RESULT").order_by("-CPI")
 		rows = {}
 		i = 0;
 		for result in results:
@@ -135,8 +135,8 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 								  ["CPI > 7", rows[i]["CPI > 7"]],
 								  ["CPI > 8", rows[i]["CPI > 8"]],
 								  ["CPI > 9", rows[i]["CPI > 9"]]]
-			chart_data[br_name] = {} 
-			chart_data[br_name] = {"column_data": {'number': "No of students", "string": "CPI Result"},
+			chart_data[br_name] = {}
+			chart_data[br_name] = {"column_data": {'string': "No of students", "number": "CPI Result"},
 							       "row_data": chart_row_data,
 					               "options": {"title": br_name},
 					               "type": "pie"}
