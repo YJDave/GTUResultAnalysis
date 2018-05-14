@@ -213,7 +213,8 @@ def doInstituteSubjectWiseFilter(year, branch, institute):
 			rows[i]["Pass"] = results.filter(RESULT="PASS").count()
 			rows[i]["Fail"] = results.filter(RESULT="FAIL").count()
 			chart_row_data = [["Pass", rows[i]["Pass"]], ["Fail", rows[i]["Fail"]]]
-			chart_coulmn_data = {"Result": "string", 'No of student': "number"}
+			chart_coulmn_data["Result"] = "string"
+			chart_coulmn_data['No of student'] = "number"
 			chart_data[subject_name] = {}
 			chart_data[subject_name] = {"column_data": chart_coulmn_data,
 								       "row_data": chart_row_data,
