@@ -79,8 +79,10 @@ def doOverallFilter(year, branch):
 			chart2_row_data.append([float(result.SPI), int(result.BR_CODE)])
 			i += 1
 
-		chart1_coulmn_data = {"SPI": 'number', "Institute code": "number"}
-		chart2_coulmn_data = {"SPI": 'number', "Branch code": "number"}
+		chart1_coulmn_data["SPI"] = 'number'
+		chart1_coulmn_data["Institute code"] = "number"
+		chart2_coulmn_data["SPI"] = 'number'
+		chart2_coulmn_data["Branch code"] = "number"
 		chart_data[chart1_title] = {"column_data": chart1_coulmn_data,
 									"row_data": chart1_row_data,
 									"options": {"title": chart1_title},
@@ -121,7 +123,8 @@ def doInstituteBranchWiseFilter(year, branch, institute):
 			rows[i]["Fail"] = results.filter(RESULT="FAIL").count()
 
 			chart_row_data = [["Pass", rows[i]["Pass"]], ["Fail", rows[i]["Fail"]]]
-			chart_coulmn_data = {"Result": "string", 'No of student': "number"}
+			chart_coulmn_data["Result"] = "string"
+			chart_coulmn_data['No of student'] = "number"
 			chart_data[br_name] = {}
 			chart_data[br_name] = {"column_data": chart_coulmn_data,
 							       "row_data": chart_row_data,
@@ -129,7 +132,7 @@ def doInstituteBranchWiseFilter(year, branch, institute):
 					               "type": "pie"}
 
 			if rows[i]["Total"] is not 0:
-				rows[i]["Percentage"] = round(rows[i]["Pass"] / rows[i]["Total"] * 100, 2);
+				rows[i]["Percentage"] = round((rows[i]["Pass"]  * 100)/ rows[i]["Total"], 2);
 			else:
 				rows[i]["Percentage"] = 0
 			i += 1
@@ -221,8 +224,9 @@ def doInstituteSubjectWiseFilter(year, branch, institute):
 						               "options": {"title": subject_name},
 						               "type": "pie"}
 			if rows[i]["Total"] is not 0:
-				rows[i]["Percentage"] = round(rows[i]["Pass"] / rows[i]["Total"] * 100, 2);
+				rows[i]["Percentage"] = round((rows[i]["Pass"]  * 100 )/ rows[i]["Total"], 2);
 			else:
+				print("Why ZERO")
 				rows[i]["Percentage"] = 0
 			i += 1
 	except Result.DoesNotExist:
