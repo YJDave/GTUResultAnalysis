@@ -48,6 +48,10 @@
 				div_element.html("");
 			}
 
+			function reset_charts() {
+				$("#chart_container").html("");
+			}
+
 		    function get_branches_of_session(session) {
 				return dropdownData[session];
 		    }
@@ -100,7 +104,8 @@
 				var data = new google.visualization.DataTable();
 				for (var key in column_data) {
 				    if (column_data.hasOwnProperty(key)) {
-				        data.addColumn(key, column_data[key])
+						// FIX: Random color not working
+				        data.addColumn(key, column_data[key], 'color: ' + getRandomColor())
 				    }
 				}
 				data.addRows(row_data)
@@ -152,6 +157,7 @@
 				var no_of_tables = Object.keys(table_data);
 				console.log(no_of_tables)
 				reset_filter_tables(div_element)
+				reset_charts()
 				for(var i in no_of_tables) {
 					// Append table header
 					var table_header = document.createElement("h4");
@@ -214,11 +220,10 @@
 				if (this.value === "") {
 					return;
 				}
+				$("#institute").val("");
 				if (this.value.toLowerCase().indexOf("institute") > -1) {
 					$("#institute").parent().show();
 				} else {
-					// FIX: Set default value in dropdown.
-					$("#institute").val("");
 					$("#institute").parent().hide();
 					do_ajax_request();
 				}
