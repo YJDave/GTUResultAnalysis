@@ -13,3 +13,9 @@ button {
 	width: 14.5%;
 }
 
+body,html{
+	height: 100%;
+	background-position: center;
+	background-size: auto;
+
+}
