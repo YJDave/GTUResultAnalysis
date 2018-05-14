@@ -47,16 +47,17 @@ def validateFilterData(data):
 def doOverallFilter(year, branch):
 	# Pass, Fail, Total, Percentage
 	filter_data = {}
-	columns = ["Name", "Institute Name", "Institute Code", "Branch Code", "Branch Name",
+	columns = ["Enrollment No.","Name", "Institute Name", "Institute Code", "Branch Code", "Branch Name",
 			   "SPI", "CPI", "CGPA", "RESULT"]
 	try:
 		results = Result.objects.filter(AcademicYear=year, exam=branch).only(
-			  "name", "instcode", "instName", "BR_CODE", "BR_NAME",
+			  "MAP_NUMBER", "name", "instcode", "instName", "BR_CODE", "BR_NAME",
 			  "SPI", "CPI", "CGPA", "RESULT").order_by("-CPI")
 		rows = {}
 		i = 0;
 		for result in results:
 			rows[i] = {}
+			rows[i]["Enrollment No."] = result.MAP_NUMBER
 			rows[i]["Name"] = result.name
 			rows[i]["Institute Name"] = result.instName
 			rows[i]["Institute Code"] = result.instcode
