@@ -91,17 +91,25 @@
 					for (var i = 0; i < no_of_charts.length; i++) {
 						var chart_data = table_data["chart-data"][no_of_charts[i]];
 						console.log(chart_data)
+						var generated_data;
 						if (chart_data["type"] === "pie") {
-							draw_pie_chart(chart_data["column_data"],
-										   chart_data["row_data"],
-										   chart_data["options"]["title"])
+							var generated_data = build_chart_data(chart_data);
+							draw_pie_chart(chart_data["options"]["title"], generated_data[0],
+										   generated_data[1]);
+						} else if (chart_data["type"] === "scatter") {
+							var generated_data = build_chart_data(chart_data);
+							draw_scatter_chart(chart_data["options"]["title"], generated_data[0],
+											   generated_data[1]);
 						}
 					}
 				}
 			}
 
-			function draw_pie_chart(column_data, row_data, title) {
+			function build_chart_data(chart_data) {
 				var data = new google.visualization.DataTable();
+				var column_data = chart_data["column_data"];
+				var row_data = chart_data["row_data"];
+				var title = chart_data["options"]["title"];
 				for (var key in column_data) {
 				    if (column_data.hasOwnProperty(key)) {
 						// FIX: Random color not working
@@ -110,17 +118,24 @@
 				}
 				data.addRows(row_data)
 
-				// var data = google.visualization.arrayToDataTable(data_array);
-
 				var options = {
 				  title: title,
 				  is3D: true,
 				};
 
-				var pie_chart = document.createElement("div");
-				pie_chart.setAttribute("id", title);
-				$("#chart_container")[0].appendChild(pie_chart);
+				var chart = document.createElement("div");
+				chart.setAttribute("id", title);
+				$("#chart_container")[0].appendChild(chart);
+				return [data, options];
+			}
+
+			function draw_pie_chart(title, data, options) {
 				var chart = new google.visualization.PieChart(document.getElementById(title));
+				chart.draw(data, options);
+			}
+
+			function draw_scatter_chart(title, data, options) {
+				var chart = new google.visualization.ScatterChart(document.getElementById(title));
 				chart.draw(data, options);
 			}
 
