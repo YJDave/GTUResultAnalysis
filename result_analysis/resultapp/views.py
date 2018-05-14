@@ -4,6 +4,7 @@ from .models import Result
 from django.http import JsonResponse
 import json
 from django.core import serializers
+from collections import OrderedDict
 
 def getResultSession():
 	result_dict = {}
@@ -49,6 +50,8 @@ def doOverallFilter(year, branch):
 	filter_data = {}
 	columns = ["Enrollment No.","Name", "Institute Name", "Institute Code", "Branch Code", "Branch Name",
 			   "SPI", "CPI", "CGPA", "RESULT"]
+	chart1_coulmn_data = OrderedDict()
+	chart2_coulmn_data = OrderedDict()
 	try:
 		results = Result.objects.filter(AcademicYear=year, exam=branch).only(
 			  "MAP_NUMBER", "name", "instcode", "instName", "BR_CODE", "BR_NAME",
@@ -76,11 +79,13 @@ def doOverallFilter(year, branch):
 			chart2_row_data.append([float(result.SPI), int(result.BR_CODE)])
 			i += 1
 
-		chart_data[chart1_title] = {"column_data": {"SPI": 'number', "Institute code": "number"},
+		chart1_coulmn_data = {"SPI": 'number', "Institute code": "number"}
+		chart2_coulmn_data = {"SPI": 'number', "Branch code": "number"}
+		chart_data[chart1_title] = {"column_data": chart1_coulmn_data,
 									"row_data": chart1_row_data,
 									"options": {"title": chart1_title},
 									"type": "scatter"}
-		chart_data[chart2_title] = {"column_data": {"SPI": 'number', "Branch code": "number"},
+		chart_data[chart2_title] = {"column_data": chart2_coulmn_data,
 									"row_data": chart2_row_data,
 									"options": {"title": chart2_title},
 									"type": "scatter"}
@@ -104,6 +109,7 @@ def doInstituteBranchWiseFilter(year, branch, institute):
 		for branch in no_of_branches:
 			br_code, br_name = branch
 			chart_row_data = []
+			chart_coulmn_data = OrderedDict()
 			rows[i] = {}
 			rows[i]["Branch Code"] = br_code
 			rows[i]["Branch Name"] = br_name
@@ -115,8 +121,9 @@ def doInstituteBranchWiseFilter(year, branch, institute):
 			rows[i]["Fail"] = results.filter(RESULT="FAIL").count()
 
 			chart_row_data = [["Pass", rows[i]["Pass"]], ["Fail", rows[i]["Fail"]]]
+			chart_coulmn_data = {"Result": "string", 'No of student': "number"}
 			chart_data[br_name] = {}
-			chart_data[br_name] = {"column_data": { "Result": "string", 'No of student': "number"},
+			chart_data[br_name] = {"column_data": chart_coulmn_data,
 							       "row_data": chart_row_data,
 					               "options": {"title": br_name},
 					               "type": "pie"}
@@ -145,6 +152,7 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 		i = 0;
 		for branch in no_of_branches:
 			chart_row_data = []
+			chart_coulmn_data = OrderedDict()
 			br_code, br_name = branch
 			rows[i] = {}
 			rows[i]["Branch Code"] = br_code
@@ -162,8 +170,10 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 								  ["CPI > 7", rows[i]["CPI > 7"]],
 								  ["CPI > 8", rows[i]["CPI > 8"]],
 								  ["CPI > 9", rows[i]["CPI > 9"]]]
-			chart_data[br_name] = {} 
-			chart_data[br_name] = {"column_data": { "CPI Result": "string", 'No of students': "number"},
+			chart_coulmn_data["CPI Result"] = "string"
+			chart_coulmn_data['No of students'] = "number"
+			chart_data[br_name] = {}
+			chart_data[br_name] = {"column_data": chart_coulmn_data,
 							       "row_data": chart_row_data,
 					               "options": {"title": br_name},
 					               "type": "pie"}
@@ -183,23 +193,32 @@ def doInstituteSubjectWiseFilter(year, branch, institute):
 	# Pass, Fail, Total, Percentage
 	filter_data = {}
 	columns = ["Subject Name", "Branch Code", "Total", "Pass", "Fail", "Percentage"]
+	chart_data = {}
 	try:
 		all_subjects = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)
-		no_of_subjects = all_subjects.values_list("SUB1NA", "BR_CODE").distinct()
+		no_of_subjects = all_subjects.values_list("SUB1NA").distinct()
 
 		rows = {}
 		i = 0;
 		for subject in no_of_subjects:
-			subject_name, br_code = subject
+			chart_row_data = []
+			chart_coulmn_data = OrderedDict()
+			subject_name, = subject
 			rows[i] = {}
 			rows[i]["Subject Name"] = subject_name
-			rows[i]["Branch Code"] = br_code
 
-			results = all_subjects.filter(SUB1NA=subject_name, BR_CODE=br_code)
+			results = all_subjects.filter(SUB1NA=subject_name)
 
 			rows[i]["Total"] = results.count()
 			rows[i]["Pass"] = results.filter(RESULT="PASS").count()
 			rows[i]["Fail"] = results.filter(RESULT="FAIL").count()
+			chart_row_data = [["Pass", rows[i]["Pass"]], ["Fail", rows[i]["Fail"]]]
+			chart_coulmn_data = {"Result": "string", 'No of student': "number"}
+			chart_data[subject_name] = {}
+			chart_data[subject_name] = {"column_data": chart_coulmn_data,
+								       "row_data": chart_row_data,
+						               "options": {"title": subject_name},
+						               "type": "pie"}
 			if rows[i]["Total"] is not 0:
 				rows[i]["Percentage"] = round(rows[i]["Pass"] / rows[i]["Total"] * 100, 2);
 			else:
@@ -208,7 +227,8 @@ def doInstituteSubjectWiseFilter(year, branch, institute):
 	except Result.DoesNotExist:
 		rows = {}
 
-	filter_data["Branch Subject wise filter of institute"] = {"row": rows, "column": columns}
+	filter_data["Branch Subject wise filter of institute"] = {"row": rows, "column": columns,
+															  "chart_data": chart_data}
 	return filter_data
 
 def filterData(data):

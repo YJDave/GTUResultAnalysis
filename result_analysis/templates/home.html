@@ -75,7 +75,7 @@
 					header.innerHTML = columns[i];
 				}
 
-				for(var j = 1; j < Object.keys(rows).length; j++) {
+				for(var j = 1; j < Object.keys(rows).length + 1; j++) {
 					var t_row = table.insertRow(j);
 					for(var i = 0; i < columns.length; i++) {
 						var t_column = t_row.insertCell(i);
