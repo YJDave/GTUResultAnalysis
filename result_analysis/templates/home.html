@@ -85,11 +85,11 @@
 			}
 
 			function draw_charts(table_data) {
-				if (table_data['chart-data'] !== undefined) {
-					var no_of_charts = Object.keys(table_data['chart-data']);
+				if (table_data['chart_data'] !== undefined) {
+					var no_of_charts = Object.keys(table_data['chart_data']);
 					console.log(no_of_charts);
 					for (var i = 0; i < no_of_charts.length; i++) {
-						var chart_data = table_data["chart-data"][no_of_charts[i]];
+						var chart_data = table_data["chart_data"][no_of_charts[i]];
 						console.log(chart_data)
 						var generated_data;
 						if (chart_data["type"] === "pie") {
@@ -113,9 +113,10 @@
 				for (var key in column_data) {
 				    if (column_data.hasOwnProperty(key)) {
 						// FIX: Random color not working
-				        data.addColumn(key, column_data[key], 'color: ' + getRandomColor())
+				        data.addColumn(column_data[key], key)
 				    }
 				}
+				console.log(row_data)
 				data.addRows(row_data)
 
 				var options = {
@@ -135,6 +136,7 @@
 			}
 
 			function draw_scatter_chart(title, data, options) {
+				console.log("Drawing scatter chart", data, options, title)
 				var chart = new google.visualization.ScatterChart(document.getElementById(title));
 				chart.draw(data, options);
 			}

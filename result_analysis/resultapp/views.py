@@ -55,6 +55,11 @@ def doOverallFilter(year, branch):
 			  "SPI", "CPI", "CGPA", "RESULT").order_by("-CPI")
 		rows = {}
 		i = 0;
+		chart1_title = "Overall institutes result"
+		chart2_title = "Overall branches result"
+		chart_data = {}
+		chart1_row_data = []
+		chart2_row_data = []
 		for result in results:
 			rows[i] = {}
 			rows[i]["Enrollment No."] = result.MAP_NUMBER
@@ -67,11 +72,22 @@ def doOverallFilter(year, branch):
 			rows[i]["CPI"] = result.CPI
 			rows[i]["CGPA"] = result.CGPA
 			rows[i]["RESULT"] = result.RESULT
+			chart1_row_data.append([float(result.SPI), int(result.instcode)])
+			chart2_row_data.append([float(result.SPI), int(result.BR_CODE)])
 			i += 1
+
+		chart_data[chart1_title] = {"column_data": {"SPI": 'number', "Institute code": "number"},
+									"row_data": chart1_row_data,
+									"options": {"title": chart1_title},
+									"type": "scatter"}
+		chart_data[chart2_title] = {"column_data": {"SPI": 'number', "Branch code": "number"},
+									"row_data": chart2_row_data,
+									"options": {"title": chart2_title},
+									"type": "scatter"}
 	except Result.DoesNotExist:
 		rows = {}
 
-	filter_data["All students result"] = {"row": rows, "column": columns}
+	filter_data["All students result"] = {"row": rows, "column": columns, "chart_data": chart_data}
 	return filter_data
 
 def doInstituteBranchWiseFilter(year, branch, institute):
@@ -136,8 +152,8 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 								  ["CPI > 7", rows[i]["CPI > 7"]],
 								  ["CPI > 8", rows[i]["CPI > 8"]],
 								  ["CPI > 9", rows[i]["CPI > 9"]]]
-			chart_data[br_name] = {}
-			chart_data[br_name] = {"column_data": {'string': "No of students", "number": "CPI Result"},
+			chart_data[br_name] = {} 
+			chart_data[br_name] = {"column_data": { "CPI Result": "string", 'No of students': "number"},
 							       "row_data": chart_row_data,
 					               "options": {"title": br_name},
 					               "type": "pie"}
@@ -147,7 +163,7 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 		rows = {}
 
 	filter_data["Branch CPI wise filter of institute"] = {"row": rows, "column": columns,
-														  "chart-data": chart_data}
+														  "chart_data": chart_data}
 	return filter_data
 
 def doInstituteBranchGenderWiseFilter(year, branch, institute):
