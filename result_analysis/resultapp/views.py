@@ -192,7 +192,7 @@ def doInstituteBranchGenderWiseFilter(year, branch, institute):
 def doInstituteSubjectWiseFilter(year, branch, institute):
 	# Pass, Fail, Total, Percentage
 	filter_data = {}
-	columns = ["Subject Name", "Branch Code", "Total", "Pass", "Fail", "Percentage"]
+	columns = ["Subject Name", "Total", "Pass", "Fail", "Percentage"]
 	chart_data = {}
 	try:
 		all_subjects = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)
