@@ -32,7 +32,7 @@ def getResultSession():
 
 def getAvaliableFilters():
 	return {"Overall": 0, "Institute Branch wise": 1, "Institute Branch CPI wise": 2,
-			"Institute Branch Gender wise": 3, "Institute Subject wise": 4}
+			"Institute Subject wise": 3}
 
 def getAllInstitute():
 	result_dict = {}
@@ -193,9 +193,6 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 														  "chart_data": chart_data}
 	return filter_data
 
-def doInstituteBranchGenderWiseFilter(year, branch, institute):
-	pass
-
 def doInstituteSubjectWiseFilter(year, branch, institute):
 	# Pass, Fail, Total, Percentage
 	filter_data = {}
@@ -247,8 +244,6 @@ def filterData(data):
 		filter_data = doInstituteBranchWiseFilter(data["year"], data["branch"], data["institute"])
 	elif data["criteria"] == "Institute Branch CPI wise":
 		filter_data = doInstituteBranchCPIWiseFilter(data["year"], data["branch"], data["institute"])
-	elif data["criteria"] == "Institute Branch Gender wise":
-		filter_data = doInstituteBranchGenderWiseFilter(data["year"], data["branch"], data["institute"])
 	elif data["criteria"] == "Institute Subject wise":
 		filter_data = doInstituteSubjectWiseFilter(data["year"], data["branch"], data["institute"])
 	else:
