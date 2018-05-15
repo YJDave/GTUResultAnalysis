@@ -9,19 +9,23 @@ from collections import OrderedDict
 def getResultSession():
 	result_dict = {}
 
-	years = Result.objects.values_list("AcademicYear", "exam")
-	year_set = set(years)
-	print("Successfully fetch years!")
-
-	# Dropdown values for result year
-	for year in year_set:
+	# Dropdown for years
+	years = Result.objects.values_list("AcademicYear").distinct()
+	for year in years:
 		temp = year[0].split("-")
 		result_dict["Winter " + str(temp[0])] = []
 		result_dict["Summer " + str(temp[1])] = []
-		if temp[0] in year[1]:
-			result_dict["Winter " + str(temp[0])].append(year[1])
-		elif temp[1] in year[1]:
-			result_dict["Summer " + str(temp[1])].append(year[1])
+	print("Successfully fetch years!")
+
+	# Dropdown values for result year
+	exams = Result.objects.values_list("AcademicYear", "exam").distinct()
+	for exam in exams:
+		exam_year, exam_name = exam
+		temp = exam_year.split("-")
+		if temp[0] in exam_name:
+			result_dict["Winter " + str(temp[0])].append(exam_name)
+		elif temp[1] in exam_name:
+			result_dict["Summer " + str(temp[1])].append(exam_name)
 		else:
 			print("==== ERROR ====, Year and exam set does not match with each other")
 	return result_dict
