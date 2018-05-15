@@ -233,6 +233,12 @@
 				}
 			});
 
+			$("#branch").on("change", function () {
+				$("#criteria").val("");
+				$("#institute").val("");
+
+			});
+
 			$("#criteria").on("change", function () {
 				if (this.value === "") {
 					return;

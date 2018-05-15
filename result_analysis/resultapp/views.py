@@ -52,7 +52,7 @@ def validateFilterData(data):
 def doOverallFilter(year, branch):
 	# Pass, Fail, Total, Percentage
 	filter_data = {}
-	columns = ["Enrollment No.","Name", "Institute Name", "Institute Code", "Branch Code", "Branch Name",
+	columns = ["Sr. No.","Enrollment No.","Name", "Institute Name", "Institute Code", "Branch Code", "Branch Name",
 			   "SPI", "CPI", "CGPA", "RESULT"]
 	chart1_coulmn_data = OrderedDict()
 	chart2_coulmn_data = OrderedDict()
@@ -69,6 +69,7 @@ def doOverallFilter(year, branch):
 		chart2_row_data = []
 		for result in results:
 			rows[i] = {}
+			rows[i]["Sr. No."] = i+1
 			rows[i]["Enrollment No."] = result.MAP_NUMBER
 			rows[i]["Name"] = result.name
 			rows[i]["Institute Name"] = result.instName
@@ -108,7 +109,7 @@ def doInstituteBranchWiseFilter(year, branch, institute):
 	chart_data = {}
 	try:
 		all_branches = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)
-		no_of_branches = all_branches.values_list("BR_CODE", "BR_NAME").distinct()
+		no_of_branches = all_branches.values_list("BR_CODE", "BR_NAME").distinct().order_by("BR_NAME")
 
 		rows = {}
 		i = 0;
@@ -153,7 +154,7 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 	chart_data = {}
 	try:
 		all_branches = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)
-		no_of_branches = all_branches.values_list("BR_CODE", "BR_NAME").distinct()
+		no_of_branches = all_branches.values_list("BR_CODE", "BR_NAME").distinct().order_by("BR_NAME")
 
 		rows = {}
 		i = 0;
@@ -196,44 +197,63 @@ def doInstituteBranchCPIWiseFilter(year, branch, institute):
 def doInstituteSubjectWiseFilter(year, branch, institute):
 	# Pass, Fail, Total, Percentage
 	filter_data = {}
-	columns = ["Subject Name", "Total", "Pass", "Fail", "Percentage"]
+	columns = ["Sr. No.","Subject Name", "Total", "Pass", "Fail", "Percentage"]
 	chart_data = {}
 	try:
-		all_subjects = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)
-		no_of_subjects = all_subjects.values_list("SUB1NA").distinct()
-
+		all_subjects = Result.objects.filter(AcademicYear=year, exam=branch, instName=institute)	
 		rows = {}
-		i = 0;
-		for subject in no_of_subjects:
-			chart_row_data = []
-			chart_coulmn_data = OrderedDict()
-			subject_name, = subject
-			rows[i] = {}
-			rows[i]["Subject Name"] = subject_name
+		i = 0
+		k = 1
+		for j in range(1,9):
+			sub = "SUB" + str(j) + "NA"
+			no_of_subjects = all_subjects.values_list(sub).distinct()
+			for subject in no_of_subjects:
+				chart_row_data = []
+				chart_coulmn_data = OrderedDict()
+				subject_name, = subject
+				if subject_name is not "":												
+					rows[i] = {}
+					rows[i]["Sr. No."] = k; 
+					rows[i]["Subject Name"] = subject_name
+					if j is 1:
+						results = all_subjects.filter(SUB1NA=subject_name)
+					if j is 2:
+						results = all_subjects.filter(SUB2NA=subject_name)
+					if j is 3:
+						results = all_subjects.filter(SUB3NA=subject_name)
+					if j is 4:
+						results = all_subjects.filter(SUB4NA=subject_name)
+					if j is 5:
+						results = all_subjects.filter(SUB5NA=subject_name)
+					if j is 6:
+						results = all_subjects.filter(SUB6NA=subject_name)
+					if j is 7:
+						results = all_subjects.filter(SUB7NA=subject_name)
+					if j is 8:
+						results = all_subjects.filter(SUB8NA=subject_name)
 
-			results = all_subjects.filter(SUB1NA=subject_name)
-
-			rows[i]["Total"] = results.count()
-			rows[i]["Pass"] = results.filter(RESULT="PASS").count()
-			rows[i]["Fail"] = results.filter(RESULT="FAIL").count()
-			chart_row_data = [["Pass", rows[i]["Pass"]], ["Fail", rows[i]["Fail"]]]
-			chart_coulmn_data["Result"] = "string"
-			chart_coulmn_data['No of student'] = "number"
-			chart_data[subject_name] = {}
-			chart_data[subject_name] = {"column_data": chart_coulmn_data,
-								       "row_data": chart_row_data,
-						               "options": {"title": subject_name},
-						               "type": "pie"}
-			if rows[i]["Total"] is not 0:
-				rows[i]["Percentage"] = round((rows[i]["Pass"]  * 100 )/ rows[i]["Total"], 2);
-			else:
-				print("Why ZERO")
-				rows[i]["Percentage"] = 0
-			i += 1
+					rows[i]["Total"] = results.count()
+					rows[i]["Pass"] = results.filter(RESULT="PASS").count()
+					rows[i]["Fail"] = results.filter(RESULT="FAIL").count()
+					chart_row_data = [["Pass", rows[i]["Pass"]], ["Fail", rows[i]["Fail"]]]
+					chart_coulmn_data["Result"] = "string"
+					chart_coulmn_data['No of student'] = "number"
+					chart_data[subject_name] = {}
+					chart_data[subject_name] = {"column_data": chart_coulmn_data,
+										       "row_data": chart_row_data,
+								               "options": {"title": subject_name},
+								               "type": "pie"}
+					if rows[i]["Total"] is not 0:
+						rows[i]["Percentage"] = round((rows[i]["Pass"]  * 100 )/ rows[i]["Total"], 2);
+					else:
+						print("Why ZERO")
+						rows[i]["Percentage"] = 0
+					i += 1
+					k += 1
 	except Result.DoesNotExist:
 		rows = {}
 
-	filter_data["Branch Subject wise filter of institute"] = {"row": rows, "column": columns,
+	filter_data["Subject wise filter of institute"] = {"row": rows, "column": columns,
 															  "chart_data": chart_data}
 	return filter_data
 
