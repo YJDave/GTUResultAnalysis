@@ -1,6 +1,7 @@
 from django.db import models
 
 class Result(models.Model):
+	id = models.CharField(primary_key=True, max_length=30)
 	St_Id=models.CharField(max_length=250, blank=True)
 	extype=models.CharField(max_length=250, blank=True)
 	examid	=models.CharField(max_length=250, blank=True)

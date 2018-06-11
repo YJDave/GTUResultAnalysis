@@ -5,6 +5,8 @@ from django.http import JsonResponse
 import json
 from django.core import serializers
 from collections import OrderedDict
+import openpyxl
+
 
 def getResultSession():
 	result_dict = {}
@@ -322,3 +324,44 @@ def HomePage(request):
 	return render(request, "home.html", {"dropdown_data": js_dropdown_data,
 										 "filters": js_filter_data,
 										 "institutes": js_institute_data})
+
+
+def UploadFile(request):
+    # source: http://thepythondjango.com/upload-process-excel-file-django/
+    if "GET" == request.method:
+        return render(request, 'upload_file.html', {})
+    else:
+        excel_file = request.FILES["excel_file"]
+ 
+        # you may put validations here to check extension or file size
+ 
+        wb = openpyxl.load_workbook(excel_file)
+ 
+        # getting a particular sheet by name out of many sheets
+        worksheet = wb["Sheet1"]
+        print("Successfully uploaded file")
+ 
+        excel_data = list()
+        # iterating over the rows and
+        # getting value from each cell in row
+        for row in worksheet.iter_rows(row_offset=2):
+            if row[0].value is None:
+                print("=========Breaking")
+                break
+            row_data = list()
+            seat_no = str(row[0].value) + row[9].value
+            print(seat_no)
+            for cell in row:
+                row_data.append(str(cell.value))
+            # print(row_data)
+            # result_id = 
+            result_data = [seat_no] + row_data
+            print("result data: ", result_data)
+            # for i in result_data:
+            # 	print(i)
+            r = Result(*result_data)
+            r.save()
+            excel_data.append(result_data)
+            # print(r)
+
+        return render(request, 'upload_file.html', {})
